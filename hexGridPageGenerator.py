@@ -60,7 +60,7 @@ for n in range(1,6):
             x,y = getDirection[i](x,y)
         addHex(x, y)
         for j in range(0,n-1):
-            x,y = getDirection[(i+2)%6](x,y)
+            x,y = getDirection[ (i+2)%6](x,y)
             addHex(x, y)
 
 def getElements():
@@ -80,6 +80,7 @@ def getElements():
 
 #last taco
 result ="""
+<!DOCTYPE html> 
 <html>
 <head>
   <link rel="stylesheet" href="styles.css">
