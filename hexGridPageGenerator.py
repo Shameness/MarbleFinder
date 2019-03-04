@@ -80,7 +80,7 @@ def getElements():
 
 #last taco
 result ="""
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
   <link rel="stylesheet" href="styles.css">
@@ -107,7 +107,7 @@ result ="""
 """
 
 # print(result)
-f = open("marbleFinder.html",'w')
+f = open("index.html",'w')
 f.write(result)
 f.close()
 #
