@@ -18,6 +18,10 @@ resizing lags b/c lot of polygon
   border-radius: 50%;
   display: inline-block;
   margin: 3px;
+  vertical-align: middle;
+  text-align: right;
+  color: black;
+  text-shadow: -1px 1px silver;
 }
 
 .mainTypePanel{

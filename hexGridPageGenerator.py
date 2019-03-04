@@ -66,6 +66,7 @@ for n in range(1,6):
 def getElements():
     resultStr = ""
     elements = [ [0,1,2,3,4],[0,1,2,3,4,5,6],[0,1] ]
+    elementCounts =[5,8,8,8,8,5,1,1,1,1,1,1,4,4]
     colors = ["#E0E0E0","#73C2FB","#FC6600","#4F97A3","#4CBB17",
     "#E0E0E0","#4682B4","#A9BA9D","#702963","#CA3433","#696980","#F9A602",
     "#222021","#FDB9C8"]
@@ -73,8 +74,8 @@ def getElements():
         resultStr += '<div class="mainTypePanel">'
         for subType in mainTypes:
             resultStr += ("""<span class="element zoom" """ +
-            """ mainType="{0}" subType="{1}" style="background-color: {2}"></span>""".format(
-            mainType, subType, colors.pop(0) ) )
+            """ mainType="{0}" subType="{1}" style="background-color: {2}">{3}</span>""".format(
+            mainType, subType, colors.pop(0),elementCounts.pop(0) ) )
         resultStr += """</div>"""
     return resultStr
 

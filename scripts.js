@@ -8,9 +8,12 @@ var elementList = {
 
 var elementSelector = document.getElementById("elementSelector")
 var elements = document.getElementsByClassName("element")
-var selectedMainType = -1;
-var selectedSubType  = -1;
-var selectedElement = null;
+var selectedMainType = 0;
+var selectedSubType  = 0;
+var selectedElement = elementList[0][0];
+var selectedNode = document.getElementsByClassName("mainTypePanel")
+                [selectedMainType].childNodes[selectedSubType]
+document.getElementsByClassName("element")[0].classList.add("selected")
 elementSelector.addEventListener('click', function(e){
     //catch selected element
     var t = e.target;
@@ -24,6 +27,7 @@ elementSelector.addEventListener('click', function(e){
     selectedSubType = t.getAttribute("subType")
     //selectedColor = t.style.backgroundColor
     selectedElement = elementList[selectedMainType][selectedSubType]
+    selectedNode = t
 },false)
 
 // Hex Grid
@@ -32,10 +36,14 @@ var hexMap = document.getElementById("hexMap")
 hexMap.addEventListener('click', function(e) {
   var t = e.target;
   if (t.nodeName == 'polygon'){
-    console.log(t.parentNode.parentNode.getAttribute("hex_x") + " " + t.parentNode.parentNode.getAttribute("hex_y"));
+    //console.log(t.parentNode.parentNode.getAttribute("hex_x") + " " + t.parentNode.parentNode.getAttribute("hex_y"));
+    var remaining = parseInt(selectedNode.innerText)
+    if (remaining == 0) alert("careful bro")
     var mCircle = t.parentNode.nextElementSibling
     mCircle.setAttribute("transform","translate(0,0)")
     mCircle.setAttribute("class", selectedElement)
+    selectedNode.innerText = remaining - 1
+
   };
   if(t.nodeName == 'use'){
     t.parentNode.setAttribute("transform","translate(2000,0)")
