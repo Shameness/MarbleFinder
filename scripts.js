@@ -4,28 +4,29 @@ function newNode(mainType,subType,x,y,isEmpty){
   node.mainType = mainType
   node.subType = subType
   node.pos = {'x':x, 'y':y}
-  node.set = function(mainType,subType){
-    node.mainType = mainType
-    node.subType = subType
-    node.isEmpty = false
-  }
-  node.reset = function(){
-    node.mainType = 0
-    node.subType = 0
-    node.isEmpty = true
-  }
   return node;
+}
+
+var setNode = function(node,mainType,subType){
+  node.mainType = mainType
+  node.subType = subType
+  node.isEmpty = false
+}
+var resetNode = function(node){
+  node.mainType = 0
+  node.subType = 0
+  node.isEmpty = true
 }
 
 function _gridToArray(x,y){
   var mY = y - 5;
-  var mX = ((x-5)*2) + (y%2)
+  var mX = ((x-5)*2) + (mY%2)
   return [mX,mY]
 }
 
 function _arrayToGrid(x,y){
   var mY = y + 5
-  var mX = ( ( x - (mY%2) )/2 ) + 5
+  var mX = ( ( x - (y%2) )/2 ) + 5
   return [mX,mY]
 }
 
@@ -41,9 +42,8 @@ function newGrid(input){
   for(let i = 0; i < input.length; i++){
     let node = input[i]
     let pos = _arrayToGrid(node.pos.x,node.pos.y)
-    mGrid[pos[0]][pos[1]].set(node.mainType,node.subType)
+    setNode(mGrid[pos[0]][pos[1]], node.mainType,node.subType)
   }
-
 
   return mGrid;
 }
@@ -55,6 +55,13 @@ function newStep(x1,y1, x2,y2){
   return step;
 }
 
+var stepToString = function(step){
+  let n1 = _gridToArray(step.node1.x, step.node1.y)
+  let n2 = _gridToArray(step.node2.x, step.node2.y)
+  return "Node 1:( "+n1[0]+", " + n1[1]+" ) Node 2:( " +
+            n2[0]+", " + n2[1]+") "
+}
+
 function newSolution(openNodes, grid){
   var solution = new Object();
   solution.grid = grid
@@ -62,13 +69,17 @@ function newSolution(openNodes, grid){
   solution.openNodes = JSON.parse(JSON.stringify(openNodes));
   solution.possibleNodes = []
   solution.metalOrder = 1
+
   return solution;
 }
 
 function findNodeCount(grid){
   var count = 0;
-  for(var node in grid){
-    if(!node.isEmpty) count++;
+  for(let i = 0; i < grid.length; i++){
+    for(let j = 0; j < grid[i].length; j++){
+      let node = grid[i][j];
+      if(!node.isEmpty) count++;
+    }
   }
   return count
 
@@ -77,9 +88,9 @@ function findNodeCount(grid){
 //grid
 function findOpenNodes(grid){
   var openNodes = [];
-  const x_max = 10 // TO DO convert 0 11 y+1 l ust
+  const x_max = 9 // TO DO convert 0 11 y+1 l ust
   const x_min = 1
-  const y_max = 10
+  const y_max = 9
   const y_min = 1
   for(let i = 0;i<11;i++){
     for(let j = 0;j < 11; j++){
@@ -105,13 +116,15 @@ function findOpenNodes(grid){
         let bool = adjents[n]
         if(bool){
           contiguousCount++;
+          if(contiguousCount > 2){
+            openNodes.push(node)
+            break;
+          }
         } else {
           contiguousCount = 0;
         }
       }
-      if(contiguousCount > 2){
-        openNodes.push(node)
-      }
+
     }
   }
   return openNodes;
@@ -161,6 +174,24 @@ function compareNodes(solution){
   return possibleSteps;
 }
 
+function stringifySolutionSteps(solutions){
+  let result = ""
+  for(let i = 0; i < solutions.length; i++){
+    let solution = solutions[i]
+    result += "==========\n" +
+             "Solution "+ i + ":\n" +
+             "==========\n"
+    for(let j = 0; j < solution.steps.length; j++){
+      result+= "Step "+ j + "\n" +
+      stepToString(solution.steps[j]) +
+      "\n"
+    }
+    result += "==========\n" +
+              "\n"
+  }
+  return result
+}
+
 function main(input){
   var successfulSolutions = []
   var solutionQueue = []
@@ -183,12 +214,13 @@ function main(input){
     } else {
       for(let i = 0; i < possibleSteps.length; i++){
         let step = possibleSteps[i]
-        let solution = JSON.parse( JSON.stringify(currentSolution) );
-        solution.steps.push( step )
+        let newSolution = {}
+        newSolution = JSON.parse(JSON.stringify(currentSolution));
+        newSolution.steps.push( step )
         //TODO
-        solution.grid[step.node1.x][step.node1.y].reset()
-        solution.grid[step.node2.x][step.node2.y].reset()
-        solution.openNodes = findOpenNodes(solution.grid)
+        resetNode(newSolution.grid[step.node1.x][step.node1.y])
+        resetNode(newSolution.grid[step.node2.x][step.node2.y])
+        newSolution.openNodes = findOpenNodes(newSolution.grid)
         solutionQueue.unshift( newSolution )
       }
     }
