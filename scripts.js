@@ -155,7 +155,7 @@ function compareNodes(solution){
             if( t1 + t2 == t1 || t1 + t2 == t2 ){
               if(t1 == metalOrder || t2 == metalOrder){
                 possibleSteps.push(newStep(x1,y1, x2,y2));
-                solution.metalOrder += 1;
+                solution.metalOrder = t1 + t2 + 1;
               }
 
             }
@@ -277,7 +277,8 @@ hexMap.addEventListener('click', function(e) {
     selectedNode.innerText = remaining - 1
     input.push(
       newNode(
-        selectedMainType, selectedSubType,
+        parseInt(selectedMainType),
+        parseInt(selectedSubType),
         parseInt(t.parentNode.parentNode.getAttribute("hex_x")),
         parseInt(t.parentNode.parentNode.getAttribute("hex_y")),
         false
@@ -290,3 +291,4 @@ hexMap.addEventListener('click', function(e) {
 
 
 }, false);
+// TODO:  Fix maintype shown as string, int expected
