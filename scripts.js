@@ -242,7 +242,8 @@ function main(input){
         resetNode(newSolution.grid[step.node1.x][step.node1.y])
         resetNode(newSolution.grid[step.node2.x][step.node2.y])
         newSolution.openNodes = findOpenNodes(newSolution.grid)
-        hashToCompare = getHash(JSON.stringify(newSolution.possibleNodes))
+        console.log( newSolution.openNodes);
+        hashToCompare = getHash(JSON.stringify(newSolution.openNodes))
         //console.log(hashToCompare)
         if (solutionsHashTable.has(hashToCompare) && hashToCompare !=2914){
           continue;

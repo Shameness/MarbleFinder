@@ -14,11 +14,12 @@ Progress:
 - Draft Algorithm :white_check_mark:
 
 ### Optimize Algorithm:
-- Eleminate duplicate steps  :large_orange_diamond:
+- Eliminate duplicate steps  :white_check_mark:
+- Remove grid prop from solution  :large_orange_diamond:
 
 ### Goals
 - Solve 4  piece puzzle under 1 minute : :white_check_mark:
-- Solve 10 piece puzzle under 1 munute : :large_orange_diamond:
+- Solve 10 piece puzzle under 1 minute : :large_orange_diamond:
 - Solve 24 piece puzzle under 1 minute : :x:
 - Solve 56 piece puzzle under 1 minute : :x:
 - Solve 56 piece puzzle under 20 seconds::x:
