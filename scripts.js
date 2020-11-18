@@ -195,18 +195,26 @@ function stringifySolutionSteps(solutions){
 //Java Hash implementation
 const getHash = (string) => {
   let hash = 0;
-  for (let i = 0; i < this.length; i++) {
-      let char = this.charCodeAt(i);
+  for (let i = 0; i < string.length; i++) {
+      let char = string.charCodeAt(i);
       hash = ((hash<<5)-hash)+char;
       hash = hash & hash; // Convert to 32bit integer
   }
   return hash;
 }
 
+//sort functions
+const sortByX = (a, b) => {
+  return a.x - b.x;
+}
+const sortByY = (a, b) => {
+  return a.y - b.y;
+}
+
 function main(input){
   let successfulSolutions = []
   let solutionQueue = []
-  let solutionsHashTable = Set()
+  let solutionsHashTable =new Set()
   let grid = newGrid(input)
 
   let solutionLen = findNodeCount(grid)
@@ -217,6 +225,7 @@ function main(input){
   while(solutionQueue.length > 0){
     var currentSolution = solutionQueue.pop()
     var possibleSteps = compareNodes(currentSolution)
+    //console.log(possibleSteps)
     if( possibleSteps.length == 0 ){
       if ( currentSolution.steps.length * 2 == solutionLen ){
         successfulSolutions.push(currentSolution)
@@ -233,9 +242,9 @@ function main(input){
         resetNode(newSolution.grid[step.node1.x][step.node1.y])
         resetNode(newSolution.grid[step.node2.x][step.node2.y])
         newSolution.openNodes = findOpenNodes(newSolution.grid)
-
-        hashToCompare = getHash(JSON.stringify(newSolution.openNodes))
-        if (solutionsHashTable.has(hashToCompare)){
+        hashToCompare = getHash(JSON.stringify(newSolution.possibleNodes))
+        //console.log(hashToCompare)
+        if (solutionsHashTable.has(hashToCompare) && hashToCompare !=2914){
           continue;
         }
         solutionsHashTable.add(hashToCompare)
