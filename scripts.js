@@ -204,12 +204,13 @@ const getHash = (string) => {
 }
 
 function main(input){
-  var successfulSolutions = []
-  var solutionQueue = []
+  let successfulSolutions = []
+  let solutionQueue = []
+  let solutionsHashTable = Set()
   let grid = newGrid(input)
 
-  var solutionLen = findNodeCount(grid)
-  var openNodes = findOpenNodes(grid)
+  let solutionLen = findNodeCount(grid)
+  let openNodes = findOpenNodes(grid)
 
   solutionQueue.push( newSolution(openNodes, grid))
 
@@ -226,12 +227,18 @@ function main(input){
       for(let i = 0; i < possibleSteps.length; i++){
         let step = possibleSteps[i]
         let newSolution = {}
-        newSolution = JSON.parse(JSON.stringify(currentSolution));
+        newSolution = JSON.parse(JSON.stringify(currentSolution));//easy deep copy
         newSolution.steps.push( step )
         //TODO
         resetNode(newSolution.grid[step.node1.x][step.node1.y])
         resetNode(newSolution.grid[step.node2.x][step.node2.y])
         newSolution.openNodes = findOpenNodes(newSolution.grid)
+
+        hashToCompare = getHash(JSON.stringify(newSolution.openNodes))
+        if (solutionsHashTable.has(hashToCompare)){
+          continue;
+        }
+        solutionsHashTable.add(hashToCompare)
         solutionQueue.unshift( newSolution )
       }
     }
