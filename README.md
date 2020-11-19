@@ -3,19 +3,26 @@ Work in progress puzzle solver for the marble game on the opus magnum.
 
 https://shameness.github.io
 
+Usage: (User Interface to be added)
+- Open developer console on browser
+- execute command `main(input)` or `stringifySolutionSteps(main(input))`
+
+
 Progress:
 ### Interactive User Interface
 - Generate HexGrid :white_check_mark:
 - Create Element Panel :white_check_mark:
 - Interactions with Grid :white_check_mark:
 - Read grid values :white_check_mark:
+- Interactions with solver algorithm :x: (currently available on console)
 
 ### JS backed breadth first search (not optimized)
 - Draft Algorithm :white_check_mark:
 
 ### Optimize Algorithm:
 - Eliminate duplicate steps  :white_check_mark:
-- Improve performance of deep-copying solution object :x:
+- De-prioritize wildcard (salt marbles) :x:
+- Improve performance for deep-copying :x:
 - Remove grid prop from solution  :x:
 
 
