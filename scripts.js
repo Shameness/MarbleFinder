@@ -48,10 +48,11 @@ function newGrid(input){
   return mGrid;
 }
 
-function newStep(x1,y1, x2,y2){
+function newStep(x1,y1, x2,y2, lp=false){
   var step = new Object();
   step.node1 = {x:x1, y:y1}
   step.node2 = {x:x2, y:y2}
+  step.lowPriority = lp;
   return step;
 }
 
@@ -67,7 +68,6 @@ function newSolution(openNodes, grid){
   solution.grid = grid
   solution.steps = []
   solution.openNodes = JSON.parse(JSON.stringify(openNodes));
-  // solution.possibleNodes = []
   solution.metalOrder = 1
 
   return solution;
@@ -146,8 +146,10 @@ function compareNodes(solution){
         let x2 = m[0], y2 = m[1]
         switch (openNodes[i].mainType) {
           case 0:
-            if(t1 == 0 || t1 == t2 || t2 == 0){
+            if(t1 == t2){
               possibleSteps.push(newStep(x1,y1, x2,y2))
+            } else if (t1 == 0 ||  t2 == 0) { // if using wildcard
+              possibleSteps.push(newStep(x1,y1, x2,y2, true)) // lowPriority
             }
             break;
 
@@ -203,17 +205,10 @@ const getHash = (string) => {
   return hash;
 }
 
-//sort functions
-const sortByX = (a, b) => {
-  return a.x - b.x;
-}
-const sortByY = (a, b) => {
-  return a.y - b.y;
-}
-
 function main(input){
   let successfulSolutions = []
   let solutionQueue = []
+  let lowPriorityQueue = []
   let solutionsHashTable =new Set()
   let grid = newGrid(input)
 
@@ -222,15 +217,16 @@ function main(input){
 
   solutionQueue.push( newSolution(openNodes, grid))
 
-  while(solutionQueue.length > 0){
-    var currentSolution = solutionQueue.pop()
+  while(solutionQueue.length > 0 || lowPriorityQueue.length > 0){
+    var currentSolution = solutionQueue.length > 0 ? solutionQueue.pop() : lowPriorityQueue.pop()
     let t = [5]
     t[0] = performance.now()
     var possibleSteps = compareNodes(currentSolution)
     t[1] = performance.now()
     if( possibleSteps.length == 0 ){
       if ( currentSolution.steps.length * 2 == solutionLen ){
-        successfulSolutions.push(currentSolution)
+        // successfulSolutions.push(currentSolution) //finds all solutuions
+        return currentSolution;
       } else {
         continue;
       }
@@ -240,26 +236,28 @@ function main(input){
         let newSolution = {}
         t[2] = performance.now()
         newSolution = JSON.parse(JSON.stringify(currentSolution));//easy deep copy
-        //newSolution = {...currentSolution}
         t[3] = performance.now()
         newSolution.steps.push( step )
-        //TODO
         resetNode(newSolution.grid[step.node1.x][step.node1.y])
         resetNode(newSolution.grid[step.node2.x][step.node2.y])
         newSolution.openNodes = findOpenNodes(newSolution.grid)
         t[4] = performance.now()
-        //console.log( newSolution.openNodes);
         hashToCompare = getHash(JSON.stringify(newSolution.openNodes))
         t[5] = performance.now()
-        //console.log(hashToCompare)
         if (solutionsHashTable.has(hashToCompare) && hashToCompare !=2914){
           continue;
         }
         solutionsHashTable.add(hashToCompare)
-        solutionQueue.unshift( newSolution )
+        if (step.lowPriority){
+          //lowPriority.puhs() for DFS, lowPriority.unshift() for BFS
+          lowPriorityQueue.push( newSolution )
+        } else {
+           solutionQueue.push( newSolution )
+        }
       }
     }
-    console.log(" "+(t[1]-t[0])+ " "+(t[2]-t[1])+ " "+(t[3]-t[2])+ " "+(t[4]-t[3])+ " "+(t[5]-t[4])  );
+    // log performance
+    //  console.log(" "+(t[1]-t[0])+ " "+(t[2]-t[1])+ " "+(t[3]-t[2])+ " "+(t[4]-t[3])+ " "+(t[5]-t[4])  );
   }
   return successfulSolutions
 }

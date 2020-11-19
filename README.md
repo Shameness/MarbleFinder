@@ -14,23 +14,27 @@ Progress:
 - Create Element Panel :white_check_mark:
 - Interactions with Grid :white_check_mark:
 - Read grid values :white_check_mark:
-- Interactions with solver algorithm :x: (currently available on console)
+- Graphical interactions with solver algorithm :x: (currently available on console)
 
-### JS backed breadth first search (not optimized)
+### JS backed Backtracking algorithm (not optimized) (formerly Breadth First Search)
 - Draft Algorithm :white_check_mark:
 
 ### Optimize Algorithm:
 - Eliminate duplicate steps  :white_check_mark:
-- De-prioritize wildcard (salt marbles) :x:
+- De-prioritize wildcard (salt marbles) :white_check_mark:
+- Change to Depth First Search :white_check_mark: (breadth first was wrong choice)
 - Improve performance for deep-copying :x:
 - Remove grid prop from solution  :x:
-
 
 ### Goals
 - Solve 4  piece puzzle under 1 minute : :white_check_mark:
 - Solve 10 piece puzzle under 1 minute : :white_check_mark:
 - Solve 24 piece puzzle under 1 minute : :white_check_mark:
-- Solve 56 piece puzzle under 1 minute : :large_orange_diamond:
-- Solve 56 piece puzzle under 20 seconds::x:
+- Solve 56 piece puzzle under 1 minute : :white_check_mark:
+- Solve 56 piece puzzle under 20 seconds::white_check_mark:
+
+Note: Goal archived as approach to problem switched to Backtracking algorithm
+from Breadth First Search. This makes timed goals not completely obsolete but
+unnecessary.
 
 :white_check_mark: >90% complete, :large_orange_diamond: work in progress, :x: 0%
