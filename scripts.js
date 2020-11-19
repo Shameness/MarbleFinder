@@ -67,7 +67,7 @@ function newSolution(openNodes, grid){
   solution.grid = grid
   solution.steps = []
   solution.openNodes = JSON.parse(JSON.stringify(openNodes));
-  solution.possibleNodes = []
+  // solution.possibleNodes = []
   solution.metalOrder = 1
 
   return solution;
@@ -224,8 +224,10 @@ function main(input){
 
   while(solutionQueue.length > 0){
     var currentSolution = solutionQueue.pop()
+    let t = [5]
+    t[0] = performance.now()
     var possibleSteps = compareNodes(currentSolution)
-    //console.log(possibleSteps)
+    t[1] = performance.now()
     if( possibleSteps.length == 0 ){
       if ( currentSolution.steps.length * 2 == solutionLen ){
         successfulSolutions.push(currentSolution)
@@ -236,14 +238,19 @@ function main(input){
       for(let i = 0; i < possibleSteps.length; i++){
         let step = possibleSteps[i]
         let newSolution = {}
+        t[2] = performance.now()
         newSolution = JSON.parse(JSON.stringify(currentSolution));//easy deep copy
+        //newSolution = {...currentSolution}
+        t[3] = performance.now()
         newSolution.steps.push( step )
         //TODO
         resetNode(newSolution.grid[step.node1.x][step.node1.y])
         resetNode(newSolution.grid[step.node2.x][step.node2.y])
         newSolution.openNodes = findOpenNodes(newSolution.grid)
-        console.log( newSolution.openNodes);
+        t[4] = performance.now()
+        //console.log( newSolution.openNodes);
         hashToCompare = getHash(JSON.stringify(newSolution.openNodes))
+        t[5] = performance.now()
         //console.log(hashToCompare)
         if (solutionsHashTable.has(hashToCompare) && hashToCompare !=2914){
           continue;
@@ -252,6 +259,7 @@ function main(input){
         solutionQueue.unshift( newSolution )
       }
     }
+    console.log(" "+(t[1]-t[0])+ " "+(t[2]-t[1])+ " "+(t[3]-t[2])+ " "+(t[4]-t[3])+ " "+(t[5]-t[4])  );
   }
   return successfulSolutions
 }

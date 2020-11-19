@@ -15,13 +15,15 @@ Progress:
 
 ### Optimize Algorithm:
 - Eliminate duplicate steps  :white_check_mark:
-- Remove grid prop from solution  :large_orange_diamond:
+- Improve performance of deep-copying solution object :x:
+- Remove grid prop from solution  :x:
+
 
 ### Goals
 - Solve 4  piece puzzle under 1 minute : :white_check_mark:
-- Solve 10 piece puzzle under 1 minute : :large_orange_diamond:
-- Solve 24 piece puzzle under 1 minute : :x:
-- Solve 56 piece puzzle under 1 minute : :x:
+- Solve 10 piece puzzle under 1 minute : :white_check_mark:
+- Solve 24 piece puzzle under 1 minute : :white_check_mark:
+- Solve 56 piece puzzle under 1 minute : :large_orange_diamond:
 - Solve 56 piece puzzle under 20 seconds::x:
 
 :white_check_mark: >90% complete, :large_orange_diamond: work in progress, :x: 0%
